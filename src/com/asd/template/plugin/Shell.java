@@ -7,7 +7,16 @@ import com.asd.template.plugin.monitor.MySftpProgressMonitor;
 import com.jcraft.jsch.*;
 
 /**
- * jsch实现的shell，包含shell，sftp两大功能
+ * jsch实现的shell，包含shell，sftp两大功能<br/>
+ * <br/>
+ * 
+ * <code>
+ *  Shell s=new Shell(host,user,password);<br/>
+ *  s.shell(input,output);<br/>
+ *  ---------<br/>
+ *  Shell s=new Shell(host,user,password);<br/>
+ *  s.sftp(from,to);<br/>
+ * </code>
  */
 public class Shell {
 

@@ -3,6 +3,9 @@
  */
 package com.asd.template.plugin.main;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import com.asd.template.plugin.AutoDeploy;
@@ -14,18 +17,20 @@ import com.asd.template.plugin.AutoDeploy;
  * @since 1.1
  */
 public class Main {
-    public static final String MODE_DEPLOY = "deploy";
-    public static final String MODE_SHELL  = "shell";
-    public static final String MODE_LOG    = "log";
-    public static final String MODE_MANUAL = "manual";
-
-    private static Scanner     scanner;
+    public static final String       MODE_DEPLOY = "deploy";
+    public static final String       MODE_SHELL  = "shell";
+    public static final String       MODE_LOG    = "log";
+    public static final String       MODE_MANUAL = "manual";
+    public static final List<String> MODE_LIST   = Arrays.asList(MODE_DEPLOY, MODE_SHELL, MODE_LOG, MODE_MANUAL);
+    private static Scanner           scanner;
 
     public static void main(String[] args) throws Exception {
         scanner = new Scanner(System.in);
-        String configFile = getConfigFile(args);
-        String mode = getMode();
+
+        File configFile = getConfigFile(args);
         AutoDeploy deploy = new AutoDeploy(configFile);
+
+        String mode = getMode();
         if (MODE_DEPLOY.equals(mode)) {
             deploy.redeploy();
             return;
@@ -35,7 +40,7 @@ public class Main {
             return;
         }
         if (MODE_MANUAL.equals(mode)) {
-            deploy.manual(getConfig(args));
+            deploy.manual(getManualConfig(args));
             return;
         }
         if (MODE_LOG.equals(mode)) {
@@ -48,7 +53,7 @@ public class Main {
      * @param string
      * @return
      */
-    private static String getConfig(String[] args) {
+    private static String getManualConfig(String[] args) {
         if (args.length < 2) {
             System.out.println("no args found! \n example: deploy a.properties old");
             System.out.println("now choose : new / old");
@@ -77,29 +82,41 @@ public class Main {
      * @param args
      * @return
      */
-    private static String getConfigFile(String[] args) {
-        String file = null;
+    private static File getConfigFile(String[] args) {
+        File file = null;
         // 如果第一个参数有输入，则认为是配置文件
         if (args.length > 0) {
-            file = args[0];
-        } else {
-            // 否则要求用户输入
-            while (true) {
-                if (file != null && !"".equals(file.trim())) {
-                    break;
-                }
-                System.out.println("please input config file:");
-                if (scanner.hasNextLine()) {
-                    file = scanner.nextLine();
+            file = new File(getFileName(args[0]));
+            if (file.exists()) {
+                return file;
+            }
+        }
+        // 否则要求用户输入
+        while (true) {
+            System.out.println("please input config file:");
+            if (scanner.hasNextLine()) {
+                String fileName = scanner.nextLine();
+                file = new File(getFileName(fileName));
+                if (file.exists()) {
+                    return file;
+                } else {
+                    System.out.println(String.format("file %s not exists!", getFileName(fileName)));
                 }
             }
         }
-        // 如果输入的不是绝对路径，则通过当前路径拼接成绝对路径
-        if (!file.startsWith("/")) {
-            file = System.getProperty("user.dir") + "/" + file;
+    }
+
+    /**
+     * 获取绝对路径的文件名
+     * 
+     * @param string
+     * @return
+     */
+    private static String getFileName(String fileName) {
+        if (!fileName.startsWith("/")) {
+            fileName = System.getProperty("user.dir") + "/" + fileName;
         }
-        System.out.println("config file : " + file);
-        return file;
+        return fileName;
     }
 
     /**
@@ -110,7 +127,7 @@ public class Main {
         if (mode == null) {
             mode = MODE_DEPLOY;
         }
-        if (!(MODE_MANUAL.equals(mode) || MODE_SHELL.equals(mode) || MODE_LOG.equals(mode))) {
+        if (!MODE_LIST.contains(mode)) {
             mode = MODE_DEPLOY;
         }
         System.out.println("mode:\t" + mode);
