@@ -85,7 +85,7 @@ public class AutoDeploy {
     }
 
     public String getCopyCmd(String from, String to) {
-        return String.format("cp -f %s %s\n", from, to);
+        return String.format("\\cp %s %s\n", from, to);
     }
 
     /**
