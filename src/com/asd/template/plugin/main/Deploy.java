@@ -3,6 +3,7 @@
  */
 package com.asd.template.plugin.main;
 
+import java.io.FileInputStream;
 import java.util.Properties;
 
 import com.asd.template.plugin.AutoDeploy;
@@ -33,9 +34,11 @@ public class Deploy {
      * @param prefix
      * @return
      */
-    private static String getFile(String prefix) {
-        String fileName = prefix + "-deploy.properties";
-        return fileName;
+    private static String getFile(String file) {
+        String dir = System.getProperty("user.dir");
+        file = dir + "/" + file;
+        System.out.println("found config file : " + file);
+        return file;
     }
 
     /**
@@ -43,7 +46,7 @@ public class Deploy {
      */
     private static Properties getArgsMap(String file) throws Exception {
         Properties properties = new Properties();
-        properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(file));
+        properties.load(new FileInputStream(file));
         return properties;
     }
 }

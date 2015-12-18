@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * 自动部署工具
  * 
@@ -137,10 +136,5 @@ public class AutoDeploy {
         String cmd = String.format("tail -f %s\n", loggerFile);
         shell.shell(new ByteArrayInputStream(cmd.getBytes()), System.out);
     }
-
-//    public static void main(String[] args)throws Exception {
-//        new AutoDeploy("192.168.40.43", "root", "admin", "/Users/wyj/Documents/g_new/demo-api/target/demo-api-0.0.1-SNAPSHOT.war",
-//                "/usr/local/apache-tomcat-8.0.29").redeploy();;
-//    }
 
 }

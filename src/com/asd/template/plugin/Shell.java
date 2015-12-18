@@ -65,6 +65,7 @@ public class Shell {
      * @param destDir 目标文件的文件路径 默认在/root/(root用户),／home/${user}/(普通用户)下
      */
     public void sftp(String sourceFile, String destDir) {
+        System.out.println(String.format("start sftp:\nsourceFile:\t%s\ndestDir:\t%s", sourceFile, destDir));
         if (destDir == null || "".equals(destDir)) {
             destDir = ".";
         }
