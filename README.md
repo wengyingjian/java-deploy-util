@@ -19,3 +19,14 @@ cmds:
 	deploy-shell a.properties
 	deploy-log a.properties
 	deploy-manual a.properties old/new
+	
+
+
+properties file:
+
+	host=192.168.40.43
+	user=root
+	password=admin
+	sourceWarFile=/Users/wyj/Documents/g_new/demo-api/target/demo-api-0.0.1-SNAPSHOT.war
+	catalinaHome=/usr/local/apache-tomcat-8.0.29
+	loggerFile=/usr/local/apache-tomcat-8.0.29/logs/catalina.out
