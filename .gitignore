@@ -1,6 +1,5 @@
-.DS_Store
+/bin/
+.classpath
 .project
 .settings/
-.classpath
-target/
-bin/
+
