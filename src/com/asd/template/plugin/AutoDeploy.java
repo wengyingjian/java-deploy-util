@@ -81,11 +81,11 @@ public class AutoDeploy {
     }
 
     public String getMoveCmd(String from, String to) {
-        return String.format("mv %s %s\n", from, to);
+        return String.format("mv -f %s %s\n", from, to);
     }
 
     public String getCopyCmd(String from, String to) {
-        return String.format("cp %s %s\n", from, to);
+        return String.format("cp -f %s %s\n", from, to);
     }
 
     /**
